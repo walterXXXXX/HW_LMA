@@ -8,6 +8,9 @@
 
 class UCameraComponent;
 class USpringArmComponent;
+class ULMAHealthComponent;
+class ULMAEnduranceComponent;
+class UAnimMontage;
 
 UCLASS()
 class LEAVEMEALONE_API ALMADefaultCharacter : public ACharacter
@@ -17,6 +20,9 @@ class LEAVEMEALONE_API ALMADefaultCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ALMADefaultCharacter();
+
+	UFUNCTION()
+	ULMAHealthComponent* GetHealthComponent() const { return HealthComponent; }
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
@@ -43,6 +49,30 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera Settings")
 	float ArmChangeVelocity = 100;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components|Health")
+	ULMAHealthComponent* HealthComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components|Endurance")
+	ULMAEnduranceComponent* EnduranceComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Animation")
+	UAnimMontage* DeathMontage;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	bool SprintState = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = "1.0", ClampMax = "5.0"))
+	float SprintAccelerationRatio = 2.5f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float MinEnduranceForSprint = 5.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float FatiguePeriod = 0.5f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float FatiguePointsPerTime = 5.0f;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -58,8 +88,21 @@ private:
 	float ArmLength = 1400.0f;	// длина штатива
 	float FOV = 55.0f;			// поле зрения камеры
 
+	FTimerHandle SprintTimerHandle;
+
 	void MoveForward(float Value);
 	void MoveRight(float Value);
+	void OnSprint();
+	void OffSprint();
+	void Sprinting();
 	
 	void CameraZoom(float Value);
+
+	void OnDeath();
+	void OnHealthChanged(float NewHealth);
+	void OnEnduranceChanged(float NewEndurance);
+
+
+	void RotationPlayerOnCursor();
+
 };
