@@ -65,6 +65,7 @@ public:
 	void AllowAutoFire() { AutoFire = true; }
 	void ProhibitAutoFire() { AutoFire = false; }
 
+	FAmmoWeapon GetCurrentAmmoWeapon() const { return CurrentAmmoWeapon; }
 
 private:
 	FAmmoWeapon CurrentAmmoWeapon;

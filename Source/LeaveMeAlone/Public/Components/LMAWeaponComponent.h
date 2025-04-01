@@ -37,10 +37,16 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
 	void Fire();
+
+	UFUNCTION(BlueprintCallable)
 	void StopFire();
+	
 	void OnCurrentClipEmpty();
 
 	void Reload();
+
+	UFUNCTION(BlueprintCallable)
+	bool GetCurrentWeaponAmmo(FAmmoWeapon& AmmoWeapon) const;
 
 private:
 	UPROPERTY()

@@ -141,8 +141,7 @@ void ALMADefaultCharacter::OnDeath() {
 }
 
 void ALMADefaultCharacter::OnHealthChanged(float NewHealth) {
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, 
-		FString::Printf(TEXT("Health = %f"), NewHealth));
+
 }
 
 void ALMADefaultCharacter::OnEnduranceChanged(float NewEndurance) {
